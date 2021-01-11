@@ -1,0 +1,40 @@
+name: "Tencent Video Helper"
+
+on:
+  schedule:
+    - cron: "0 2 * * *"  # scheduled at 10:00 (UTC+8) everyday
+  workflow_dispatch:
+
+env:
+  RUN_ENV: 'prod'
+  TZ: 'Asia/Shanghai'
+  SCKEY: ${{ secrets.SCKEY }}
+  AUTH_REFRESH_URL: ${{ secrets.AUTH_REFRESH_URL }}
+  AUTH_REFRESH_COOKIE: ${{ secrets.AUTH_REFRESH_COOKIE }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: master
+
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Random sleep
+        if: github.event_name == 'schedule'
+        run: sleep $(shuf -i 10-300 -n 1)
+
+      - name: Run sign
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          python3 ./main.py
