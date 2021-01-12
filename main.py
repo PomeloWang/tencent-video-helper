@@ -73,7 +73,7 @@ def main():
     message = {
         'today': today,
         'ret': -1,
-        'nick': '未知',
+        'checkin_score': "-1",
         'end': ''
     }
     # 主要是判断是否登陆成功以及刷新cookie参数
@@ -84,7 +84,7 @@ def main():
         log.error("刷新cookie参数失败, {msg}".format(**auth_refresh_obj))
         message.update({
             'ret': auth_refresh_obj.get('errcode', -1),
-            'nick': decode_urldecode(auth_refresh_obj.get('nick', "未知")),
+            'nick': decode_urldecode(auth_refresh_obj.get('nick', "刷新Cookie参数失败, 未获取到用户信息")),
         })
         notify("腾讯视频 签到失败", CONFIG.MESSGAE_TEMPLATE.format(**message))
         sys.exit(-1)
@@ -116,7 +116,8 @@ def main():
     message.update({
         'ret': sign_obj['ret'],
         'nick': decode_urldecode(auth_refresh_obj['nick']),
-        'message': sign_obj['msg']
+        'message': sign_obj['msg'],
+        'checkin_score': sign_obj.get('checkin_score', "👀 今日已签到了哦")
 
     })
     log.info("签到成功 {}".format(CONFIG.MESSGAE_TEMPLATE.format(**message)))

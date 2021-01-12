@@ -50,6 +50,7 @@ log.basicConfig(level=CONFIG.LOG_LEVEL)
 MESSGAE_TEMPLATE = '''
     {today:#^30}
     🔅[{nick}]
+    签到积分: {checkin_score}
     签到结果: {message}
     {end:#^30}'''
 
