@@ -45,7 +45,7 @@ def decode_json_str(s):
 def notify(title, message):
     if not CONFIG.SCKEY:
         log.info('未配置SCKEY,正在跳过推送')
-        sys.exit(-1)
+        return
 
     log.info('准备推送通知...')
     url = 'https://sc.ftqq.com/{}.send'.format(CONFIG.SCKEY)
