@@ -27,6 +27,7 @@ class _Config:
         'Cookie': AUTH_REFRESH_COOKIE
     }
     SIGN_URL = 'https://vip.video.qq.com/fcgi-bin/comm_cgi?name=hierarchical_task_system&cmd=2'
+    MOBILE_CHECKIN = 'http://v.qq.com/x/bu/mobile_checkin?isDarkMode=0&uiType=REGULAR'
     SCKEY = os.environ.get('SCKEY', '')
 
 
@@ -52,6 +53,7 @@ MESSGAE_TEMPLATE = '''
     🔅[{nick}]
     签到积分: {checkin_score}
     签到结果: {message}
+    手机签到: {mobile_checkin}
     {end:#^30}'''
 
 CONFIG.MESSGAE_TEMPLATE = MESSGAE_TEMPLATE

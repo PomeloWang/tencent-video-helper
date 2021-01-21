@@ -1,11 +1,9 @@
 import datetime
 import json
 import re
-import sys
+import urllib.parse
 
 import requests
-import urllib.parse
-from requests.exceptions import HTTPError
 
 from settings import *
 
@@ -51,11 +49,7 @@ def notify(title, message):
     url = 'https://sc.ftqq.com/{}.send'.format(CONFIG.SCKEY)
     payload = {'text': '{}'.format(title), 'desp': message}
 
-    try:
-        response = to_python(requests.post(url, data=payload).text)
-    except Exception as e:
-        log.error(e)
-        raise HTTPError
+    response = to_python(requests.post(url, data=payload).text)
 
     errmsg = response['errmsg']
     if errmsg == 'success':
@@ -74,6 +68,7 @@ def main():
         'today': today,
         'ret': -1,
         'checkin_score': "-1",
+        'mobile_checkin': "失败",
         'end': ''
     }
     # 主要是判断是否登陆成功以及刷新cookie参数
@@ -86,8 +81,9 @@ def main():
             'ret': auth_refresh_obj.get('errcode', -1),
             'nick': decode_urldecode(auth_refresh_obj.get('nick', "刷新Cookie参数失败, 未获取到用户信息")),
         })
+        log.error("签到失败", CONFIG.MESSGAE_TEMPLATE.format(**message))
         notify("腾讯视频 签到失败", CONFIG.MESSGAE_TEMPLATE.format(**message))
-        sys.exit(-1)
+        exit(-1)
 
     old_cookie_obj = cookie_2_python(CONFIG.HEADERS['Cookie'])
     need_update_fields = {
@@ -111,18 +107,29 @@ def main():
     # QZOutputJson=({ "ret": 0,"checkin_score": 0,"msg":"OK"});
     sign_response = request.get(url=CONFIG.SIGN_URL, headers=CONFIG.HEADERS).text
     sign_obj = decode_json_str(sign_response)
-    log.info(sign_obj)
 
     message.update({
         'ret': sign_obj['ret'],
         'nick': decode_urldecode(auth_refresh_obj['nick']),
         'message': sign_obj['msg'],
-        'checkin_score': sign_obj.get('checkin_score', "👀 今日已签到了哦")
+        'checkin_score': sign_obj.get('checkin_score', 0) or "👀 今日已签到了哦"
 
     })
+    # TODO 手机签到失败不会重置任务状态
+    m_checkin_response = request.get(url=CONFIG.MOBILE_CHECKIN, headers=CONFIG.HEADERS).text
+
+    if "isMultiple" in m_checkin_response:
+        message.update({'mobile_checkin': "成功"})
     log.info("签到成功 {}".format(CONFIG.MESSGAE_TEMPLATE.format(**message)))
     notify("腾讯视频 签到成功", CONFIG.MESSGAE_TEMPLATE.format(**message))
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        notify("腾讯视频 签到失败", {
+            "msg": "请前往执行日志查看详情",
+            "err": str(e)
+        })
+        raise e
