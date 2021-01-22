@@ -118,7 +118,7 @@ def main():
     # TODO 手机签到失败不会重置任务状态
     m_checkin_response = request.get(url=CONFIG.MOBILE_CHECKIN, headers=CONFIG.HEADERS).text
 
-    if "isMultiple" in m_checkin_response:
+    if "page_signin_detail" in m_checkin_response:
         message.update({'mobile_checkin': "成功"})
     log.info("签到成功 {}".format(CONFIG.MESSGAE_TEMPLATE.format(**message)))
     notify("腾讯视频 签到成功", CONFIG.MESSGAE_TEMPLATE.format(**message))
