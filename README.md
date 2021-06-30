@@ -10,8 +10,8 @@ Tencent Video Helper
 
 > 吹水交流：[130516740](https://qm.qq.com/cgi-bin/qm/qr?k=_M9lYFxkYD7yQQR2btyG3pkZWFys_I-l&authKey=evGDzE2eFVBm46jsHpgcWrokveg70Z9GKl3H45o0oJuia620UGeO27lDPG9gKb/2&noverify=0)
 ### 部署
-- `AUTH_REFRESH_URL`    腾讯视频官网, 打开浏览器控制台网络搜索`auth_refresh`相关的请求[图片教程](https://cdn.jsdelivr.net/gh/BlueskyClouds/BlueskyClouds.github.io/2020/11/1/img/v_1.jpg)
-- `AUTH_REFRESH_COOKIE` 从上面找到的请求中复制`Cookie`[图片教程](https://cdn.jsdelivr.net/gh/BlueskyClouds/BlueskyClouds.github.io/2020/11/1/img/v_2.jpg)
+- `AUTH_REFRESH_URL`    腾讯视频官网, 打开浏览器控制台网络搜索`auth_refresh`相关的请求[图片教程](https://cdn.jsdelivr.net/gh/BlueskyClouds/Script/img/2020/11/1/img/v_1.jpg)
+- `AUTH_REFRESH_COOKIE` 从上面找到的请求中复制`Cookie`[图片教程](https://cdn.jsdelivr.net/gh/BlueskyClouds/Script/img/2020/11/1/img/v_2.jpg)
 - `SCKEY` 详情参考 [SERVER酱官网](http://sc.ftqq.com/3.version)
 
 
