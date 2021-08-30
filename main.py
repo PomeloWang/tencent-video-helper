@@ -49,15 +49,12 @@ def notify(title, message):
     url = 'https://sc.ftqq.com/{}.send'.format(CONFIG.SCKEY)
     payload = {'text': '{}'.format(title), 'desp': message}
 
-    response = to_python(requests.post(url, data=payload).text)
-
-    errmsg = response['errmsg']
-    if errmsg == 'success':
-        log.info('推送成功')
-    else:
-        log.error('{}: {}'.format('推送失败', errmsg))
+    try:
+        response = to_python(requests.post(url, data=payload).text)
+        log.info('推送结果: {}', response.get('errmsg', ''))
+    except Exception as e:
+        log.error('{}: {}'.format('推送异常', errmsg))
     return log.info('任务结束')
-
 
 def decode_urldecode(s):
     return urllib.parse.unquote(s)
