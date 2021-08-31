@@ -53,7 +53,7 @@ def notify(title, message):
         response = to_python(requests.post(url, data=payload).text)
         log.info('推送结果: {}', response.get('errmsg', ''))
     except Exception as e:
-        log.error('{}: {}'.format('推送异常', errmsg))
+        log.error('{}: {}'.format('推送异常', e))
     return log.info('任务结束')
 
 def decode_urldecode(s):
