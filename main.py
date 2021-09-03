@@ -42,18 +42,19 @@ def decode_json_str(s):
 
 def notify(title, message):
     if not CONFIG.SCKEY:
-        log.info('未配置SCKEY,正在跳过推送')
+        log.info("未配置SCKEY,正在跳过推送")
         return
 
-    log.info('准备推送通知...')
-    url = 'https://sc.ftqq.com/{}.send'.format(CONFIG.SCKEY)
+    log.info("准备推送通知...")
+    url = 'https://sct.ftqq.com/{}.send'.format(CONFIG.SCKEY)
     payload = {'text': '{}'.format(title), 'desp': message}
 
     try:
         response = to_python(requests.post(url, data=payload).text)
-        log.info('推送结果: {}', response.get('errmsg', ''))
+        # {'code': 0, 'message': '', 'data': {'pushid': '111111', 'readkey': 'xxxx', 'error': 'SUCCESS', 'errno': 0}}
+        log.info('推送结果: {}'.format(response.get('data', {'error': 'no data'}).get('error', '')))
     except Exception as e:
-        log.error('{}: {}'.format('推送异常', e))
+        log.error('{}: {}'.format("推送异常", e))
     return log.info('任务结束')
 
 def decode_urldecode(s):
